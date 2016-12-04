@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import time, os, sys, socket, math, atexit
+import time, os, sys, socket, math, atexit, traceback
 import RPi.GPIO as GPIO
 try:
     import thread
@@ -175,7 +175,11 @@ class interrupt_daemon(object):
                 conn, addr =  self.skt.accept() #blocking call
                 if self.running:
                     thread.start_new_thread(self.handle_connection, (conn,))
-        except Exception:
+        except Exception as e:
+            print("Exection.")
+            print(e)
+            traceback.print_exc()
+            print("----------------")
             if self.running:
                 self.stop()
         finally:
